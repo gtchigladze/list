@@ -15,7 +15,8 @@ export class PostsComponent implements OnInit {
   closeResult =''; 
   searchText = ''
   public searchFilter: any = '';
-  page: number = 1;
+  page: any = 1;
+  
 
   constructor(private apiService: ApiService, private modalService: NgbModal, private fb: FormBuilder, ) {  }
     
@@ -25,7 +26,7 @@ export class PostsComponent implements OnInit {
     this.form = this.fb.group({
       id: ["", [Validators.required,  Validators.minLength(5)]
       ],
-      title: ["", [Validators.required,  ]
+      title: ["", [Validators.required, ]
     ],
       body: ["", [Validators.required, ]
     ],
@@ -36,7 +37,8 @@ export class PostsComponent implements OnInit {
 
   getAll(){
     this.apiService.get().subscribe((Posts:any)=>{
-      this.posts = Posts
+      this.posts = Posts 
+    
     })
   }
 
@@ -73,6 +75,19 @@ export class PostsComponent implements OnInit {
          this.posts = this.posts.filter((post:any) => post.id !== id);
     })
   }
+
+
+  search(){
+    if(this.searchText == ''){
+      this.ngOnInit()
+    }else{
+      this.posts = this.posts.filter(res => {
+        return res.title.toLowerCase().match(this.searchText.toLowerCase())
+      })
+    }
+  }
+
+
 
 
 
